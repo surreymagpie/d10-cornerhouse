@@ -7,8 +7,6 @@ services:
       - 8000:80
     environment:
       - WEBROOT=web
-    networks:
-      - drupal10
     volumes:
       - .:/var/www/html:Z,rw
       - $HOME/.ssh:/root/.ssh:Z,rw
@@ -21,11 +19,27 @@ services:
       - MYSQL_DATABASE=drupal10
       - MYSQL_ROOT_PASSWORD=drupal10
     volumes:
-      - db-data:/var/lib/mysql
+      - d10-dbdata:/var/libmysql
+
+  d7:
+    image: ghcr.io/surreymagpie/nginx-php:latest
+    ports:
+      - 8001:80
+    volumes:
+      - ../d7-cornerhouse:/var/www/html:Z,rw
+      - $HOME/.ssh:/root/.ssh:Z,rw
+
+  legacy:
+    image: docker.io/library/mariadb:10.6.16
+    environment:
+      - MYSQL_USER=drupal7
+      - MYSQL_PASSWORD=drupal7
+      - MYSQL_DATABASE=drupal7
+      - MYSQL_ROOT_PASSWORD=drupal7
+    volumes:
+      - d7-dbdata:/var/lib/mysql
 
 volumes:
-  db-data:
-
-networks:
-  drupal10:
+  d10-dbdata:
+  d7-dbdata:
 

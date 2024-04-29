@@ -27,15 +27,21 @@ $settings['trusted_host_patterns'] = [
 ];
 ```
 
-then execute the following commands:
+For migrating data from the legacy site, that repo should reside in a sibling directory to this project, *e.g. under a common `Code` directory*.
+
+Setup with the following commands:
 
 ```bash
 podman compose up -d
+
 source .envrc
+# The above gives access to `drush` and `composer` commands for woring in the D10
+# site and a `drush7` command for the D7 one.
+
 composer install
 drush site:install --existing-config -y
 ```
 
-then the site will be available at [http://localhost:8000](http://localhost:8000).
+then the D10 site will be available at [http://localhost:8000](http://localhost:8000) while the D7 one is at [http://localhost:8001](http://localhost:8001).
 
 Modules and themes should be added with `composer require`, installed using `drush` or the admin UI, then the updated configuration exported.
